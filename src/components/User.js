@@ -8,6 +8,8 @@ import ConfirmDelete from './ConfirmDelete';
 import Success from './alert/success';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getAll } from '../redux/action/ActionReducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 function EditInactiveIcon(props) {
   return (
@@ -92,14 +94,16 @@ function DeleteActiveIcon(props) {
 }
 
 const User = () => {
-  const [user, setUser] = useState('');
+  let { user, message, refresh } = useSelector(state=>state.userReducer)
+  const dispatch = useDispatch()
+  // const [user, setUser] = useState('');
   const [userById, setUserById] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [whatToDelete, setWhatToDelete] = useState('');
-  const [isMessage, setIsMessage] = useState(false)
-  const [message, setMessage] = useState('');
+  const [isMessage, setIsMessage] = useState(false);
+  // const [message, setMessage] = useState('');
 
   const columns = [
     { name: 'No.' },
@@ -110,13 +114,8 @@ const User = () => {
   ];
 
   useEffect(() => {
-    const getData = async () => {
-      const result = await apiMethod.findAll();
-      setUser(result.data);
-    };
-
-    getData();
-  }, [isOpen, isOpenEdit, isDelete]);
+    dispatch(getAll())
+  }, [refresh]);
 
   const getById = async (id) => {
     const result = await apiMethod.getById(id);
@@ -127,12 +126,12 @@ const User = () => {
   const deleteUser = async (data) => {
     setWhatToDelete(data);
     setIsDelete(true);
-    toast.success('haha')
+    toast.success('haha');
   };
 
   const messageConfig = (response) => {
-    setIsMessage(true)
-    setMessage(response.message);
+    setIsMessage(true);
+    // setMessage(response.message);
   };
 
   return (
@@ -173,13 +172,9 @@ const User = () => {
           setIsOpen(true);
         }}
       >
-        {isMessage ? (
-          <Success message={message}/>
-        ) : (
-          ''
-        )}
+        {isMessage ? <Success message={message} /> : ''}
         <div className="p-5 rounded-md bg-white">
-        <ToastContainer />
+          <ToastContainer />
           <table className="min-w-full table-fixed ">
             <thead>
               <tr>

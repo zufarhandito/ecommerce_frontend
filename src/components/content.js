@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Content = (props) => {
   const { title, children, isOpen, ...others } = props;
@@ -11,13 +12,14 @@ const Content = (props) => {
           </h1>
         </div>
         <div className="mt-4 flex sm:mt-0 sm:ml-4">
-          <button
+          <Link
+            to="/create-user"
             onClick={isOpen}
             type="button"
             className="order-0 inline-flex items-center px-4 py-2 border border-transparent rounded-md bg-purple-500 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-1"
           >
             Create
-          </button>
+          </Link>
         </div>
       </div>
       <div className="mt-8 sm:block relative">
