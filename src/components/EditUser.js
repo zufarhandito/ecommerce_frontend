@@ -81,7 +81,7 @@ const EditUser = (props) => {
                           />
                           {errors?.username && errors.username.message}
                         </div>
-                        <div>
+                        {/* <div>
                           <label>Password</label>
                           <input
                             // defaultValue={props.userById.password}
@@ -90,7 +90,7 @@ const EditUser = (props) => {
                             {...register('password', registerOptions.password)}
                           />
                           {errors?.password && errors.password.message}
-                        </div>
+                        </div> */}
                         <div>
                           <label>Firstname</label>
                           <input
