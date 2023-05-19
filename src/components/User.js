@@ -6,6 +6,8 @@ import AddUser from './AddUser';
 import EditUser from './EditUser';
 import ConfirmDelete from './ConfirmDelete';
 import Success from './alert/success';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function EditInactiveIcon(props) {
   return (
@@ -125,6 +127,7 @@ const User = () => {
   const deleteUser = async (data) => {
     setWhatToDelete(data);
     setIsDelete(true);
+    toast.success('haha')
   };
 
   const messageConfig = (response) => {
@@ -176,6 +179,7 @@ const User = () => {
           ''
         )}
         <div className="p-5 rounded-md bg-white">
+        <ToastContainer />
           <table className="min-w-full table-fixed ">
             <thead>
               <tr>
