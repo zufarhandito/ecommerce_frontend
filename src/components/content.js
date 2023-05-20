@@ -13,8 +13,8 @@ const Content = (props) => {
         </div>
         <div className="mt-4 flex sm:mt-0 sm:ml-4">
           <Link
-            to="/create-user"
-            onClick={isOpen}
+            to={`/create-${title}`}
+            // onClick={isOpen}
             type="button"
             className="order-0 inline-flex items-center px-4 py-2 border border-transparent rounded-md bg-purple-500 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:order-1"
           >

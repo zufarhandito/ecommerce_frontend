@@ -10,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getAll } from '../redux/action/ActionReducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function EditInactiveIcon(props) {
   return (
@@ -94,8 +95,10 @@ function DeleteActiveIcon(props) {
 }
 
 const User = () => {
-  let { user, message, refresh } = useSelector(state=>state.userReducer)
-  const dispatch = useDispatch()
+  let { user, message, status, refresh } = useSelector(
+    (state) => state.userReducer,
+  );
+  const dispatch = useDispatch();
   // const [user, setUser] = useState('');
   const [userById, setUserById] = useState('');
   const [isOpen, setIsOpen] = useState(false);
@@ -112,9 +115,9 @@ const User = () => {
     { name: 'Lastname' },
     { name: 'Aksi' },
   ];
-
+  // console.log(status);
   useEffect(() => {
-    dispatch(getAll())
+    dispatch(getAll());
   }, [refresh]);
 
   const getById = async (id) => {
@@ -126,7 +129,6 @@ const User = () => {
   const deleteUser = async (data) => {
     setWhatToDelete(data);
     setIsDelete(true);
-    toast.success('haha');
   };
 
   const messageConfig = (response) => {
@@ -150,7 +152,7 @@ const User = () => {
         <EditUser
           show={isOpenEdit}
           userById={userById}
-          closeModal={() => setIsOpenEdit(false)}
+          // closeModal={() => setIsOpenEdit(false)}
         />
       ) : (
         ''
@@ -167,7 +169,7 @@ const User = () => {
         ''
       )}
       <Content
-        title="User"
+        title="user"
         isOpen={() => {
           setIsOpen(true);
         }}
@@ -175,6 +177,9 @@ const User = () => {
         {isMessage ? <Success message={message} /> : ''}
         <div className="p-5 rounded-md bg-white">
           <ToastContainer />
+          <div className="text-red-600">
+            PR: <br /> 1.toast ambil dari backend
+          </div>
           <table className="min-w-full table-fixed ">
             <thead>
               <tr>
@@ -220,7 +225,8 @@ const User = () => {
                           <div className="px-1 py-1 ">
                             <Menu.Item>
                               {({ active }) => (
-                                <button
+                                <Link
+                                  to={`/edit-user/${data.id}`}
                                   onClick={() => {
                                     getById(data.id);
                                   }}
@@ -242,7 +248,7 @@ const User = () => {
                                     />
                                   )}
                                   Edit
-                                </button>
+                                </Link>
                               )}
                             </Menu.Item>
                             <Menu.Item>

@@ -1,10 +1,14 @@
 import React, { Fragment } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import apiMethod from './api/apiMethod';
+import { useDispatch } from 'react-redux';
+import { remove } from '../redux/action/ActionReducer';
 
 const ConfirmDelete = (props) => {
+  const dispatch = useDispatch();
+
   const deleteData = async () => {
-    await apiMethod.remove(props.id);
+    dispatch(remove(props.id));
     props.closeModal();
   };
   return (

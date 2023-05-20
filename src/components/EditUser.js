@@ -1,20 +1,48 @@
-import React, { Fragment } from 'react';
-import { Transition, Dialog } from '@headlessui/react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import apiMethod from './api/apiMethod';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useNavigate } from 'react-router-dom';
+import { update } from '../redux/action/ActionReducer';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditUser = (props) => {
+  let { user, message, refresh } = useSelector((state) => state.userReducer);
+  const [filteredUser, setFiltered] = useState('');
+  const [tempUser, setTempUser] = useState('');
+
+  const params = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {
+    let defaultValue = {};
+    defaultValue.username = filteredUser.username;
+    // defaultValue.password = filteredUser.password;
+    defaultValue.firstname = filteredUser.firstname;
+    defaultValue.lastname = filteredUser.lastname;
+    reset({ ...defaultValue });
+
+    const filteredUsers = (user || []).filter((item) => item.id == params.id);
+    setFiltered(filteredUsers);
+  }, [refresh]);
+  // console.log(message);
+
   const handleRegistration = async (data) => {
-    data.id = props.userById.id;
-    await apiMethod.updateUserCustomer(data);
-    props.closeModal();
-    // console.log(data);
+    data.id = filteredUser[0]?.id;
+    const result = await dispatch(update(data));
+    console.log(result);
+    // toast.success()
+    setTempUser(user);
+
+    navigate('/users');
   };
 
   const handleError = (errors) => {};
@@ -23,72 +51,60 @@ const EditUser = (props) => {
     username: { required: 'Username is required' },
     firstname: { required: 'Firstname is required' },
     lastname: { required: 'Lastname is required' },
-    password: {
-      required: 'Password is required',
-      minLength: {
-        value: 8,
-        message: 'Password must have at least 8 characters',
-      },
-    },
   };
 
   return (
     <div>
-                  <form
-                        onSubmit={handleSubmit(handleRegistration, handleError)}
-                      >
-                        <div>
-                          <label>Username</label>
-                          <input
-                            defaultValue={props.userById.username}
-                            type="text"
-                            name="username"
-                            {...register('username', registerOptions.username)}
-                          />
-                          {errors?.username && errors.username.message}
-                        </div>
-                        {/* <div>
-                          <label>Password</label>
-                          <input
-                            // defaultValue={props.userById.password}
-                            type="text"
-                            name="password"
-                            {...register('password', registerOptions.password)}
-                          />
-                          {errors?.password && errors.password.message}
-                        </div> */}
-                        <div>
-                          <label>Firstname</label>
-                          <input
-                            defaultValue={props.userById.customer.firstname}
-                            type="text"
-                            name="firstname"
-                            {...register(
-                              'firstname',
-                              registerOptions.firstname,
-                            )}
-                          />
-                          {errors?.firstname && errors.firstname.message}
-                        </div>
-                        <div>
-                          <label>Lastname</label>
-                          <input
-                            defaultValue={props.userById.customer.lastname}
-                            type="text"
-                            name="lastname"
-                            {...register('lastname', registerOptions.lastname)}
-                          />
-                          {errors?.lastname && errors.lastname.message}
-                        </div>
-                        <div className="mt-4">
-                          <button
-                            type="submit"
-                            className="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                          >
-                            Submit
-                          </button>
-                        </div>
-                      </form>
+      <form onSubmit={handleSubmit(handleRegistration, handleError)}>
+        <div>
+          <label>Username</label>
+          <input
+            defaultValue={filteredUser[0]?.username}
+            type="text"
+            name="username"
+            {...register('username', registerOptions.username)}
+          />
+          {errors?.username && errors.username.message}
+        </div>
+        <div>
+          <label>Password</label>
+          <input
+            // defaultValue={props.filteredUser.password}
+            type="text"
+            name="password"
+            {...register('password', registerOptions.password)}
+          />
+          {errors?.password && errors.password.message}
+        </div>
+        <div>
+          <label>Firstname</label>
+          <input
+            defaultValue={filteredUser[0]?.customer.firstname}
+            type="text"
+            name="firstname"
+            {...register('firstname', registerOptions.firstname)}
+          />
+          {errors?.firstname && errors.firstname.message}
+        </div>
+        <div>
+          <label>Lastname</label>
+          <input
+            defaultValue={filteredUser[0]?.customer.lastname}
+            type="text"
+            name="lastname"
+            {...register('lastname', registerOptions.lastname)}
+          />
+          {errors?.lastname && errors.lastname.message}
+        </div>
+        <div className="mt-4">
+          <button
+            type="submit"
+            className="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
     </div>
   );
 };

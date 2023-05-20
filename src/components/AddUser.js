@@ -4,8 +4,12 @@ import apiMethod from './api/apiMethod';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { create } from '../redux/action/ActionReducer';
 
 const AddUser = () => {
+  let { user, message, refresh } = useSelector((state) => state.userReducer);
+  const dispatch = new useDispatch();
   const navigate = useNavigate();
   const {
     register,
@@ -13,12 +17,14 @@ const AddUser = () => {
     formState: { errors },
   } = useForm();
 
-  const handleRegistration = async (data) => {
-    const result = await apiMethod.create(data);
-    toast.success(result.data.message + ' redirecting in 5s')
-    setTimeout(()=>{
-      navigate('/users')
-    },5000)
+  const handleRegistration = (data) => {
+    console.log(data);
+    dispatch(create(data));
+    // console.log(result);
+    // toast.success(data.message);
+    setTimeout(() => {
+      navigate('/users');
+    }, 5000);
   };
 
   const handleError = (errors) => {};
@@ -37,8 +43,8 @@ const AddUser = () => {
   };
 
   return (
-    <div className='m-32 bg-white p-10 rounded-md'>
-      <ToastContainer />
+    <div className="m-32 bg-white p-10 rounded-md">
+      {/* <ToastContainer /> */}
       <form onSubmit={handleSubmit(handleRegistration, handleError)}>
         <div className="flex flex-col">
           <label className="block">

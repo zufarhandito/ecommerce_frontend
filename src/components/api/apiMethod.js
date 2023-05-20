@@ -18,10 +18,33 @@ const remove = (id) => {
   return axios.delete(`/users/${id}`);
 };
 
+const findAllProduct = () => {
+  return axios.get('/products');
+};
+
+const createProduct = (data) => {
+  return axios.post('/products', data, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+  });
+};
+
+const updateProduct = (data) => {
+  return axios.patch(`/products/${data.id}`, data, {
+    headers: {
+      'content-type': 'multipart/form-data',
+    },
+  });
+};
+
 export default {
   findAll,
   create,
   getById,
   updateUserCustomer,
   remove,
+  findAllProduct,
+  createProduct,
+  updateProduct,
 };
