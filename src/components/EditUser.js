@@ -7,14 +7,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EditUser = (props) => {
-  let { user, message, refresh } = useSelector((state) => state.userReducer);
   const [filteredUser, setFiltered] = useState('');
-  const [tempUser, setTempUser] = useState('');
-
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  let { user, message, refresh } = useSelector((state) => state.userReducer);
+  // const [tempUser, setTempUser] = useState('');
   const {
     register,
     handleSubmit,
@@ -32,15 +31,15 @@ const EditUser = (props) => {
 
     const filteredUsers = (user || []).filter((item) => item.id == params.id);
     setFiltered(filteredUsers);
-  }, [refresh]);
+  }, []);
   // console.log(message);
 
-  const handleRegistration = async (data) => {
+  const handleRegistration = (data) => {
     data.id = filteredUser[0]?.id;
-    const result = await dispatch(update(data));
+    const result = dispatch(update(data));
     console.log(result);
     // toast.success()
-    setTempUser(user);
+    // setTempUser(user);
 
     navigate('/users');
   };

@@ -9,6 +9,7 @@ import Layout from './components/shared/Layout';
 import AddUser from './components/AddUser';
 import EditUser from './components/EditUser';
 import AddProduct from './components/Products/AddProduct';
+import EditProduct from './components/Products/EditProduct';
 
 function App() {
   return (
@@ -19,9 +20,10 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/users" element={<User />} />
             <Route path="/create-user" element={<AddUser />} />
-            <Route path="/create-product" element={<AddProduct/>} />
+            <Route path="/create-product" element={<AddProduct />} />
             <Route path="/edit-user/:id" element={<EditUser />} />
             <Route path="/products" element={<Product />} />
+            <Route path="/edit-product/:id" element={<EditProduct />} />
             <Route path="/orders" element={<Order />} />
             <Route path="/categories" element={<Order />} />
           </Route>

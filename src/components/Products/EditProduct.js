@@ -1,18 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { create_product } from '../../redux/action/ActionReducer';
+import { useNavigate, useParams } from 'react-router-dom';
+// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { update_product } from '../../redux/action/ActionReducer';
 
-const AddProduct = () => {
+const EditProduct = () => {
+  const [filteredProduct, setFilteredProduct] = useState('');
+
+  let { products, message, refresh } = useSelector(
+    (state) => state.productReducer,
+  );
+
   const navigate = useNavigate();
+  const params = useParams();
   const dispatch = useDispatch();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    let defaultValue = {};
+
+    defaultValue.name = filteredProduct.name;
+    defaultValue.price = filteredProduct.price;
+    defaultValue.category_id = filteredProduct.category_id;
+    defaultValue.description = filteredProduct.description;
+    reset({ ...defaultValue });
+
+    const filterProduct = products.filter((a) => a.id == params.id)[0];
+    setFilteredProduct(filterProduct);
+  }, []);
 
   const registerOptions = {
     name: { required: 'Name is required' },
@@ -29,17 +51,21 @@ const AddProduct = () => {
     formData.append('category_id', data.category_id);
     formData.append('description', data.description);
     formData.append('price', data.price);
-
-    dispatch(create_product(formData));
+    // formData.append('id', filteredProduct?.id);
+    // console.log();
+    // console.log(...formData);
+    // console.log(data);
+    const idProduct = filteredProduct.id;
+    dispatch(update_product(formData, idProduct));
     setTimeout(() => {
       navigate('/products');
-    }, 5000);
+    }, 3000);
   };
 
   const handleError = () => {};
 
   return (
-    <div className="bg-white min-h-screen rounded-md p-8">
+    <div>
       <form
         className="flex "
         onSubmit={handleSubmit(handleRegistration, handleError)}
@@ -54,6 +80,7 @@ const AddProduct = () => {
               Nama Produk
             </span>
             <input
+              defaultValue={filteredProduct.name}
               id="name"
               className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                             focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
@@ -70,6 +97,7 @@ const AddProduct = () => {
               Kategori
             </span>
             <input
+              defaultValue={filteredProduct.category_id}
               id="category_id"
               className="mt-1 block w-full px-3 py-2 bg-gray-100 border border-slate-200 rounded-md text-sm  placeholder-slate-400
                             focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
@@ -86,6 +114,7 @@ const AddProduct = () => {
               Harga
             </span>
             <input
+              defaultValue={filteredProduct.price}
               type="number"
               id="price"
               className="mt-1 block w-1/2 px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
@@ -103,6 +132,7 @@ const AddProduct = () => {
               Deskripsi
             </span>
             <textarea
+              defaultValue={filteredProduct.description}
               className="mt-1 block border h-auto w-full border-slate-300 rounded-md text-sm shadow-sm"
               {...register('description')}
             ></textarea>
@@ -117,4 +147,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default EditProduct;

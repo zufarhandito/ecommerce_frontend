@@ -15,6 +15,8 @@ function productReducers(state = initialState, action) {
       return { state, products: payload, refresh: true };
     case ActionTypes.ADD_PRODUCT:
       return { state, message: payload.message, refresh: false };
+    case ActionTypes.UPDATE_PRODUCT:
+      return { state, message: payload.message, refresh: false };
     default:
       return state;
   }

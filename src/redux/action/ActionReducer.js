@@ -65,13 +65,26 @@ export const getAllProduct = () => async (dispatch) => {
 
 export const create_product = (data) => async (dispatch) => {
   try {
-    console.log(data);
+    // console.log(data);
     const res = await apiMethod.createProduct(data);
     dispatch({
       type: ActionTypes.ADD_PRODUCT,
       payload: res.data,
     });
     // console.log(res);
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+export const update_product = (data, id) => async (dispatch) => {
+  try {
+    console.log(id);
+    const res = await apiMethod.updateProduct(data, id);
+    dispatch({
+      type: ActionTypes.UPDATE_PRODUCT,
+      payload: res.data,
+    });
   } catch (error) {
     alert(error.message);
   }

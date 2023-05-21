@@ -30,8 +30,8 @@ const createProduct = (data) => {
   });
 };
 
-const updateProduct = (data) => {
-  return axios.patch(`/products/${data.id}`, data, {
+const updateProduct = (data, id) => {
+  return axios.patch(`/products/${id}`, data, {
     headers: {
       'content-type': 'multipart/form-data',
     },
