@@ -5,6 +5,7 @@ import { Menu, Transition } from '@headlessui/react';
 import AddUser from './AddUser';
 import EditUser from './EditUser';
 import ConfirmDelete from './ConfirmDelete';
+import { doRequestGetUser } from '../redux/action/ActionReducer';
 import Success from './alert/success';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -96,8 +97,10 @@ function DeleteActiveIcon(props) {
 
 const User = () => {
   let { user, message, status, refresh } = useSelector(
-    (state) => state.userReducer,
+    (state) => state.userReducers,
   );
+
+  // console.log(user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -117,7 +120,7 @@ const User = () => {
   // console.log(status);
 
   useEffect(() => {
-    dispatch(getAll());
+    dispatch(doRequestGetUser());
   }, [refresh]);
 
   const goToEdit = (item) => {

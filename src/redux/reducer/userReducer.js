@@ -12,7 +12,7 @@ function userReducers(state = initialState, action) {
   // console.log(payload);
 
   switch (type) {
-    case ActionTypes.GET_USERS:
+    case ActionTypes.GET_USERS_RESPONSE:
       return {
         state,
         user: payload.data,
@@ -20,11 +20,11 @@ function userReducers(state = initialState, action) {
         message: payload.message,
         refresh: true,
       };
-    case ActionTypes.UPDATE_USER:
+    case ActionTypes.UPDATE_USER_RESPONSE:
       return { state, message: payload.message, refresh: false };
-    case ActionTypes.DEL_USER:
+    case ActionTypes.DEL_USER_RESPONSE:
       return { state, message: payload.message, refresh: false };
-    case ActionTypes.ADD_USER:
+    case ActionTypes.ADD_USER_RESPONSE:
       return { state, message: payload.message, refresh: true };
     default:
       return state;
