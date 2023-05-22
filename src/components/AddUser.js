@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import apiMethod from './api/apiMethod';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { create } from '../redux/action/ActionReducer';
+import { create, doAdd } from '../redux/action/ActionReducer';
 
 const AddUser = () => {
-  let { user, message, refresh } = useSelector((state) => state.userReducer);
+  let { user, message, refresh } = useSelector((state) => state.userReducers);
   const dispatch = new useDispatch();
   const navigate = useNavigate();
   const {
@@ -17,15 +17,10 @@ const AddUser = () => {
     formState: { errors },
   } = useForm();
 
-  const handleRegistration = async (data) => {
-    const result = await dispatch(create(data));
-    // toast.success(message);
-    console.log(result);
-    // setTimeout(() => {
-    //   navigate('/users');
-    // }, 2000);
+  const handleRegistration = (data) => {
+    dispatch(doAdd(data));
+    navigate('/users');
   };
-
   const handleError = (errors) => {};
 
   const registerOptions = {

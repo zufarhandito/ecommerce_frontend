@@ -17,7 +17,7 @@ const Product = () => {
   // console.log(products);
 
   useEffect(() => {
-    dispatch(getAllProduct());
+    // dispatch();
   }, [refresh]);
 
   const getWhatToDelete = (data) => {

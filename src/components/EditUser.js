@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { update } from '../redux/action/ActionReducer';
+import { doUpdate, update } from '../redux/action/ActionReducer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,8 +25,7 @@ const EditUser = (props) => {
 
   const handleRegistration = (data) => {
     data.id = filteredUser.id;
-    const result = dispatch(update(data));
-    console.log(result);
+    dispatch(doUpdate(data));
 
     navigate('/users');
   };

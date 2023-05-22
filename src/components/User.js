@@ -5,7 +5,7 @@ import { Menu, Transition } from '@headlessui/react';
 import AddUser from './AddUser';
 import EditUser from './EditUser';
 import ConfirmDelete from './ConfirmDelete';
-import { doRequestGetUser } from '../redux/action/ActionReducer';
+import { doDelete, doRequestGetUser } from '../redux/action/ActionReducer';
 import Success from './alert/success';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -120,6 +120,10 @@ const User = () => {
   // console.log(status);
 
   useEffect(() => {
+    if (message) {
+      toast.success(message);
+    }
+
     dispatch(doRequestGetUser());
   }, [refresh]);
 
@@ -137,7 +141,7 @@ const User = () => {
   };
 
   const deleteData = () => {
-    dispatch(remove(whatToDelete.id));
+    dispatch(doDelete(whatToDelete.id));
     setIsDelete(false);
   };
 

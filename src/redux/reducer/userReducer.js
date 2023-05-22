@@ -9,7 +9,7 @@ const initialState = {
 
 function userReducers(state = initialState, action) {
   const { type, payload } = action;
-  // console.log(payload);
+  // console.log(action);
 
   switch (type) {
     case ActionTypes.GET_USERS_RESPONSE:
@@ -17,7 +17,7 @@ function userReducers(state = initialState, action) {
         state,
         user: payload.data,
         status: payload.status,
-        message: payload.message,
+        // message: payload.message,
         refresh: true,
       };
     case ActionTypes.UPDATE_USER_RESPONSE:
@@ -25,7 +25,7 @@ function userReducers(state = initialState, action) {
     case ActionTypes.DEL_USER_RESPONSE:
       return { state, message: payload.message, refresh: false };
     case ActionTypes.ADD_USER_RESPONSE:
-      return { state, message: payload.message, refresh: true };
+      return { state, message: payload.message, refresh: false };
     default:
       return state;
   }
