@@ -1,47 +1,95 @@
 import React, { useEffect, useState } from 'react';
 import Content from './content';
-import { getAllProduct } from '../redux/action/ActionReducer';
+import { delete_product, getAllProduct } from '../redux/action/ActionReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ConfirmDelete from './ConfirmDelete';
 
 const Product = () => {
-  const [hasilForm, setHasilform] = useState('');
   const [isDelete, setIsDelete] = useState(false);
+  const [whatToDelete, setWhatToDelete] = useState('');
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   let { products, message, refresh } = useSelector(
     (state) => state.productReducer,
   );
+  // console.log(products);
 
   useEffect(() => {
     dispatch(getAllProduct());
   }, [refresh]);
 
+  const getWhatToDelete = (data) => {
+    setWhatToDelete(data);
+    setIsDelete(true);
+  };
+
+  const deleteDataa = () => {
+    dispatch(delete_product(whatToDelete.id));
+    setIsDelete(false);
+  };
+
+  const goToEdit = (item) => {
+    navigate(`/edit-product/${item.id}`, {
+      state: {
+        products: item,
+      },
+    });
+  };
+
   return (
     <Content title="product">
-      {/* {isDelete ? <ConfirmDelete table="Product" /> : ''} */}
-      <div className="w-full grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {(products || []).map((item) => (
-          <div className=" bg-white p-5">
-            <h3>{item.name}</h3>
-            <div className="border-black">
-              <img
-                className="h-80 w-full"
-                src={`http://localhost:8000/uploads/${item.image}`}
-              ></img>
+          <div class="bg-white shadow-lg hover:shadow-none rounded-lg p-4">
+            <div
+              class="min-h-48 md:h-64 bg-cover bg-center rounded-lg "
+              style={{
+                backgroundImage: `url(http://localhost:8000/uploads/${item.image})`,
+              }}
+            ></div>
+            <h2 class="text-xl font-semibold mt-2">{item.name}</h2>
+            <p className="text-sm mb-2">{item.product_category.name}</p>
+            <div className="h-20">
+              <p className="overflow-hidden">{item.description}</p>
             </div>
-            <p>{`Rp. ${item.price}`}</p>
-            <p>{item.description}</p>
-            <Link to={`/edit-product/${item.id}`} className="text-blue-600">
-              edit
-            </Link>
-            <button onClick={() => setIsDelete(true)} className="text-red-600">
-              delete
-            </button>
+            <div className="flex gap-4 justify-between">
+              <button
+                className="text-blue-500"
+                onClick={() => {
+                  goToEdit(item);
+                }}
+              >
+                edit
+              </button>
+
+              <button
+                onClick={() => {
+                  getWhatToDelete(item);
+                }}
+                className="text-red-600"
+              >
+                delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
+
+      {isDelete ? (
+        <ConfirmDelete
+          show={isDelete}
+          name={whatToDelete.name}
+          closeModal={() => setIsDelete(false)}
+          id={whatToDelete.id}
+          funcion={getWhatToDelete}
+          table="Product"
+          remove={deleteDataa}
+        />
+      ) : (
+        ''
+      )}
     </Content>
   );
 };

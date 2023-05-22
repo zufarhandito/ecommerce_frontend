@@ -13,7 +13,7 @@ import { Menu, Transition, Popover } from '@headlessui/react';
 const Nav = ({ showNav, setShowNav }) => {
   return (
     <div
-      className={`fixed w-full h-16 flex justify-between bg-white shadow-sm items-center transition-all duration-[400ms] ${
+      className={`fixed w-full z-10 h-16 flex justify-between bg-white bg-opacity-25 backdrop-blur-md shadow-sm items-center transition-all duration-[400ms] ${
         showNav ? 'pl-56' : ''
       }`}
     >

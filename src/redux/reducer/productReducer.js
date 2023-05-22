@@ -17,6 +17,8 @@ function productReducers(state = initialState, action) {
       return { state, message: payload.message, refresh: false };
     case ActionTypes.UPDATE_PRODUCT:
       return { state, message: payload.message, refresh: false };
+    case ActionTypes.DEL_PRODUCT:
+      return { state, message: payload.message, refresh: false };
     default:
       return state;
   }

@@ -22,7 +22,7 @@ const Sidebar = forwardRef(({ showNav }, ref) => {
   const { pathname } = useLocation();
 
   return (
-    <div ref={ref} className="fixed w-56 h-full bg-white shadow-sm">
+    <div ref={ref} className="fixed z-20 w-56 h-full bg-white shadow-sm">
       <div className="flex justify-center mt-6 mb-14">
         <p className="rotate-6 bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text text-3xl mt-5 font-black ">
           Gokil <br /> Shop{' '}

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 // import { useDispatch, useSelector } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { update_product } from '../../redux/action/ActionReducer';
 
 const EditProduct = () => {
-  const [filteredProduct, setFilteredProduct] = useState('');
-
   let { products, message, refresh } = useSelector(
     (state) => state.productReducer,
   );
 
   const navigate = useNavigate();
   const params = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
+  const [filteredProduct, setFilteredProduct] = useState(
+    location.state?.products,
+  );
 
   const {
     register,
@@ -31,9 +33,6 @@ const EditProduct = () => {
     defaultValue.category_id = filteredProduct.category_id;
     defaultValue.description = filteredProduct.description;
     reset({ ...defaultValue });
-
-    const filterProduct = products.filter((a) => a.id == params.id)[0];
-    setFilteredProduct(filterProduct);
   }, []);
 
   const registerOptions = {
@@ -65,7 +64,7 @@ const EditProduct = () => {
   const handleError = () => {};
 
   return (
-    <div>
+    <div className="bg-white py-14 rounded-md px-5">
       <form
         className="flex "
         onSubmit={handleSubmit(handleRegistration, handleError)}
@@ -80,7 +79,7 @@ const EditProduct = () => {
               Nama Produk
             </span>
             <input
-              defaultValue={filteredProduct.name}
+              // defaultValue={filteredProduct.name}
               id="name"
               className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
                             focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
@@ -140,7 +139,20 @@ const EditProduct = () => {
               {errors?.description && errors.description.message}
             </p>
           </label>
-          <button type="submit">Submit</button>
+          <div className="mt-4 flex justify-between gap-3">
+            <button
+              type="submit"
+              className="inline-flex w-1/2 justify-center rounded-md border border-green-200 px-4 py-2 text-sm font-medium text-green-900 hover:bg-blue-100 hover:border-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="inline-flex w-1/2 justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </form>
     </div>

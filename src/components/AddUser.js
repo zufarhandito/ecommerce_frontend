@@ -17,14 +17,13 @@ const AddUser = () => {
     formState: { errors },
   } = useForm();
 
-  const handleRegistration = (data) => {
-    console.log(data);
-    dispatch(create(data));
-    // console.log(result);
-    // toast.success(data.message);
-    setTimeout(() => {
-      navigate('/users');
-    }, 5000);
+  const handleRegistration = async (data) => {
+    const result = await dispatch(create(data));
+    // toast.success(message);
+    console.log(result);
+    // setTimeout(() => {
+    //   navigate('/users');
+    // }, 2000);
   };
 
   const handleError = (errors) => {};

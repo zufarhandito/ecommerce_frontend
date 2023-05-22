@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { update } from '../redux/action/ActionReducer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const EditUser = (props) => {
-  const [filteredUser, setFiltered] = useState('');
   const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [filteredUser, setFiltered] = useState(location.state?.users);
 
-  let { user, message, refresh } = useSelector((state) => state.userReducer);
-  // const [tempUser, setTempUser] = useState('');
+  // let { user, message, refresh } = useSelector((state) => state.userReducer);
   const {
     register,
     handleSubmit,
@@ -21,25 +21,12 @@ const EditUser = (props) => {
     formState: { errors },
   } = useForm();
 
-  useEffect(() => {
-    let defaultValue = {};
-    defaultValue.username = filteredUser.username;
-    // defaultValue.password = filteredUser.password;
-    defaultValue.firstname = filteredUser.firstname;
-    defaultValue.lastname = filteredUser.lastname;
-    reset({ ...defaultValue });
-
-    const filteredUsers = (user || []).filter((item) => item.id == params.id);
-    setFiltered(filteredUsers);
-  }, []);
-  // console.log(message);
+  // useEffect(() => {}, []);
 
   const handleRegistration = (data) => {
-    data.id = filteredUser[0]?.id;
+    data.id = filteredUser.id;
     const result = dispatch(update(data));
     console.log(result);
-    // toast.success()
-    // setTempUser(user);
 
     navigate('/users');
   };
@@ -58,7 +45,7 @@ const EditUser = (props) => {
         <div>
           <label>Username</label>
           <input
-            defaultValue={filteredUser[0]?.username}
+            defaultValue={filteredUser.username}
             type="text"
             name="username"
             {...register('username', registerOptions.username)}
@@ -78,7 +65,7 @@ const EditUser = (props) => {
         <div>
           <label>Firstname</label>
           <input
-            defaultValue={filteredUser[0]?.customer.firstname}
+            defaultValue={filteredUser.customer.firstname}
             type="text"
             name="firstname"
             {...register('firstname', registerOptions.firstname)}
@@ -88,7 +75,7 @@ const EditUser = (props) => {
         <div>
           <label>Lastname</label>
           <input
-            defaultValue={filteredUser[0]?.customer.lastname}
+            defaultValue={filteredUser.customer.lastname}
             type="text"
             name="lastname"
             {...register('lastname', registerOptions.lastname)}

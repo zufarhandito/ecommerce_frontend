@@ -21,7 +21,8 @@ export const create = (data) => async (dispatch) => {
       type: ActionTypes.ADD_USER,
       payload: res.data,
     });
-    // return res.message
+    // return res.message;
+    console.log('kajsdnaks');
   } catch (error) {
     alert(error.message);
   }
@@ -83,6 +84,31 @@ export const update_product = (data, id) => async (dispatch) => {
     const res = await apiMethod.updateProduct(data, id);
     dispatch({
       type: ActionTypes.UPDATE_PRODUCT,
+      payload: res.data,
+    });
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+export const delete_product = (id) => async (dispatch) => {
+  try {
+    const res = await apiMethod.deleteProduct(id);
+    dispatch({
+      type: ActionTypes.DEL_PRODUCT,
+      payload: res.data,
+    });
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+export const get_product_categories = () => async (dispatch) => {
+  try {
+    const res = await apiMethod.getProductCat();
+    console.log(res.data);
+    dispatch({
+      type: ActionTypes.GET_CATEGORY,
       payload: res.data,
     });
   } catch (error) {

@@ -7,6 +7,8 @@ const ActionTypes = {
   GET_PRODUCTS: 'GET_PRODUCTS',
   ADD_PRODUCT: 'ADD_PRODUCT',
   DEL_PRODUCT: 'DEL_PRODUCT',
+  ADD_CATEGORY: 'ADD_CATEGORY',
+  GET_CATEGORY: 'GET_CATEGORY',
 };
 
 export default ActionTypes;

@@ -38,6 +38,14 @@ const updateProduct = (data, id) => {
   });
 };
 
+const deleteProduct = (id) => {
+  return axios.delete(`/products/${id}`);
+};
+
+const getProductCat = () => {
+  return axios.get('/product-categories');
+};
+
 export default {
   findAll,
   create,
@@ -47,4 +55,6 @@ export default {
   findAllProduct,
   createProduct,
   updateProduct,
+  deleteProduct,
+  getProductCat,
 };

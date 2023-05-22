@@ -1,16 +1,7 @@
 import React, { Fragment } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
-import apiMethod from './api/apiMethod';
-import { useDispatch } from 'react-redux';
-import { remove } from '../redux/action/ActionReducer';
 
 const ConfirmDelete = (props) => {
-  const dispatch = useDispatch();
-
-  const deleteData = async () => {
-    dispatch(remove(props.id));
-    props.closeModal();
-  };
   return (
     <Transition appear show={props.show} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={props.closeModal}>
@@ -52,9 +43,9 @@ const ConfirmDelete = (props) => {
                     </div>
                   </p>
                 </div>
-                <div className="mt-4 flex justify-self-end">
+                <div className="mt-4 flex justify-end">
                   <button
-                    onClick={deleteData}
+                    onClick={props.remove}
                     type="button"
                     className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
                   >

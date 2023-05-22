@@ -10,6 +10,7 @@ import AddUser from './components/AddUser';
 import EditUser from './components/EditUser';
 import AddProduct from './components/Products/AddProduct';
 import EditProduct from './components/Products/EditProduct';
+import ProductCategory from './components/product-category/ProductCategory';
 
 function App() {
   return (
@@ -25,7 +26,7 @@ function App() {
             <Route path="/products" element={<Product />} />
             <Route path="/edit-product/:id" element={<EditProduct />} />
             <Route path="/orders" element={<Order />} />
-            <Route path="/categories" element={<Order />} />
+            <Route path="/categories" element={<ProductCategory />} />
           </Route>
         </Routes>
       </BrowserRouter>

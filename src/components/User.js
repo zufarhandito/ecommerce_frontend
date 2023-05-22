@@ -8,9 +8,9 @@ import ConfirmDelete from './ConfirmDelete';
 import Success from './alert/success';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getAll } from '../redux/action/ActionReducer';
+import { getAll, remove } from '../redux/action/ActionReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function EditInactiveIcon(props) {
   return (
@@ -99,14 +99,12 @@ const User = () => {
     (state) => state.userReducer,
   );
   const dispatch = useDispatch();
-  // const [user, setUser] = useState('');
-  const [userById, setUserById] = useState('');
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenEdit, setIsOpenEdit] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [whatToDelete, setWhatToDelete] = useState('');
   const [isMessage, setIsMessage] = useState(false);
-  // const [message, setMessage] = useState('');
 
   const columns = [
     { name: 'No.' },
@@ -115,48 +113,33 @@ const User = () => {
     { name: 'Lastname' },
     { name: 'Aksi' },
   ];
+
   // console.log(status);
+
   useEffect(() => {
     dispatch(getAll());
   }, [refresh]);
 
-  const getById = async (id) => {
-    const result = await apiMethod.getById(id);
-    setUserById(result.data);
-    setIsOpenEdit(true);
+  const goToEdit = (item) => {
+    navigate(`/edit-user/${item.id}`, {
+      state: {
+        users: item,
+      },
+    });
   };
 
-  const deleteUser = async (data) => {
+  const getWhatToDelete = (data) => {
     setWhatToDelete(data);
     setIsDelete(true);
   };
 
-  const messageConfig = (response) => {
-    setIsMessage(true);
-    // setMessage(response.message);
+  const deleteData = () => {
+    dispatch(remove(whatToDelete.id));
+    setIsDelete(false);
   };
 
   return (
     <>
-      {isOpen ? (
-        <AddUser
-          show={isOpen}
-          closeModal={() => setIsOpen(false)}
-          name="Daftarkan User dan Customer Baru"
-          message={messageConfig}
-        />
-      ) : (
-        ''
-      )}
-      {isOpenEdit ? (
-        <EditUser
-          show={isOpenEdit}
-          userById={userById}
-          // closeModal={() => setIsOpenEdit(false)}
-        />
-      ) : (
-        ''
-      )}
       {isDelete ? (
         <ConfirmDelete
           show={isDelete}
@@ -164,6 +147,8 @@ const User = () => {
           name={whatToDelete.username}
           id={whatToDelete.id}
           closeModal={() => setIsDelete(false)}
+          funcion={getWhatToDelete}
+          remove={deleteData}
         />
       ) : (
         ''
@@ -225,11 +210,8 @@ const User = () => {
                           <div className="px-1 py-1 ">
                             <Menu.Item>
                               {({ active }) => (
-                                <Link
-                                  to={`/edit-user/${data.id}`}
-                                  onClick={() => {
-                                    getById(data.id);
-                                  }}
+                                <button
+                                  onClick={() => goToEdit(data)}
                                   className={`${
                                     active
                                       ? 'bg-violet-500 text-white'
@@ -248,13 +230,13 @@ const User = () => {
                                     />
                                   )}
                                   Edit
-                                </Link>
+                                </button>
                               )}
                             </Menu.Item>
                             <Menu.Item>
                               {({ active }) => (
                                 <button
-                                  onClick={() => deleteUser(data)}
+                                  onClick={() => getWhatToDelete(data)}
                                   className={`${
                                     active
                                       ? 'bg-violet-500 text-white'
